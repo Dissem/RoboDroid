@@ -113,6 +113,10 @@ public class JoystickView extends View {
 			event.onJoystickMove(rX, rY);
 	}
 
+	public void addEventListener(JoystickEvent eventListener) {
+		eventListeners.add(eventListener);
+	}
+
 	public static interface JoystickEvent {
 		/**
 		 * Returns relative values x, y between -1 and 1;

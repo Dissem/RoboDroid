@@ -52,8 +52,12 @@ public class JoystickView extends View {
 		setMeasuredDimension(d, d);
 
 		// before measure, get the center of view
-		posX = centerX = (int) getWidth() / 2;
-		posY = centerY = (int) getHeight() / 2;
+		centerX = (int) getWidth() / 2;
+		centerY = (int) getHeight() / 2;
+		if (posX == 0) {
+			posX = centerX;
+			posY = centerY;
+		}
 
 		radius = d / 2;
 		stickRadius = (int) (radius * 0.25);
@@ -61,7 +65,7 @@ public class JoystickView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		// super.onDraw(canvas);
+		super.onDraw(canvas);
 		centerX = (getWidth()) / 2;
 		centerY = (getHeight()) / 2;
 
@@ -125,5 +129,44 @@ public class JoystickView extends View {
 		 * @param y
 		 */
 		public void onJoystickMove(float x, float y);
+	}
+
+	private static float PI = (float) Math.PI;
+	private static float PI_HALF = (float) (Math.PI / 2);
+
+	/**
+	 * @param x
+	 * @param y
+	 * @return the angle between the y axis and P(x/y) in radians
+	 */
+	public static float getAngle(float x, float y) {
+		if (x != 0) {
+			if (y != 0) {
+				if (x > 0)
+					return PI + PI_HALF - (float) Math.atan(y / x);
+				else
+					return PI_HALF - (float) Math.atan(y / x);
+			} else {
+				if (x < 0)
+					return PI_HALF;
+				else
+					return PI + PI_HALF;
+			}
+		} else {
+			if (y < 0) {
+				return 0;
+			} else {
+				return PI;
+			}
+		}
+	}
+
+	/**
+	 * @param x
+	 * @param y
+	 * @return the distance between O(0/0) and P(x/y)
+	 */
+	public static float getValue(float x, float y) {
+		return (float) Math.sqrt(x * x + y * y);
 	}
 }
